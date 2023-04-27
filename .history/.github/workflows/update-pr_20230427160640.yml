@@ -5,8 +5,7 @@ jobs:
   update_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Pull Request Updater GitHub Action
-        uses: tzkhan/pr-update-action@v2
+      - uses: tzkhan/pr-update-action@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: '[a-z\d-_.\\/]+'
