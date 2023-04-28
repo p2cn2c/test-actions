@@ -11,9 +11,9 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           base-branch-regex: '[a-z\d-_.\\/]+'
           head-branch-regex: 'zsd-\d+'
+          title-uppercase-head-match: false
+          title-template: "[%headbranch%] "
           body-template: |
             [%headbranch%](https://zenerate.atlassian.net/browse/%headbranch%)
           body-update-action: "suffix"
           body-uppercase-base-match: false
-          title-uppercase-head-match: false
-          title-template: "[%headbranch%] "
