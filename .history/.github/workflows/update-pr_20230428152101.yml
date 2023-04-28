@@ -12,7 +12,6 @@ jobs:
           base-branch-regex: '[a-z\d-_.\\/]+'
           head-branch-regex: 'zsd-\d+'
           body-template: |
-          ### Fixes # (jira issue number if present)
             [%headbranch%](https://zenerate.atlassian.net/browse/%headbranch%)
           body-update-action: "prefix"
           body-newline-count: 2
