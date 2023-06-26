@@ -45,4 +45,8 @@ jobs:
 
       - name: Connect to Oracle Cloud Subnet
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa tunnel@${{ secrets.ORACLE_CLOUD_IP_ADDRESS }}  'cd /var/www/main_front && echo "Changed directory to /var/www/main_front"'
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa tunnel@${{ secrets.ORACLE_CLOUD_IP_ADDRESS }} connect-main
+
+      - name: Change Directory on Oracle Cloud
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa tunnel@${{ secrets.ORACLE_CLOUD_IP_ADDRESS }} 'cd /var/www/main_front && echo "Changed directory to /var/www/main_front"'
