@@ -1,0 +1,65 @@
+name: deploy
+on:
+  push:
+    branches:
+      - 'dev'
+
+jobs:
+  deploy:
+    name: 'Build & Deploy'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.17.0
+
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+          
+      - name: Create SSH Key Pair
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
+
+      - name: Verify SSH Key Pair
+        run: |
+          ls -l ~/.ssh/id_rsa
+          ls -l ~/.ssh/id_rsa.pub
+          cat ~/.ssh/id_rsa.pub
+
+      - name: Add SSH Key to Known Hosts
+        run: |
+          ssh-keyscan -H 129.146.202.188 >> ~/.ssh/known_hosts
+
+      - name: Test SSH Connection
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa tunnel@129.146.202.188 'echo "SSH connection successful"'
+
+      - name: Connect to Oracle Cloud
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa tunnel@129.146.202.188 'echo "SSH connection successful"'
+
+          
+      - name: Check Directory on Oracle Cloud
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa tunnel@129.146.202.188 '[ -d /home/tunnel ] && echo "Directory exists" || echo "Directory does not exist"'
+
+      - name: List SSH files
+        run: |
+          ls -al /home/tunnel/
+
+
+      - name: Change Directory on Oracle Cloud
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -i /home/tunnel/.ssh/oci_propzen_live.key ubuntu@10.20.1.89 'cd /var/www/main_front && echo "Changed directory to /var/www/main_front"'
+
+      - name: Add Safe Directory
+        run: |
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -i /home/tunnel/.ssh/oci_propzen_live.key ubuntu@10.20.1.89 'config --global --add safe.directory /var/www/main_front && echo "Safe directory added"'
