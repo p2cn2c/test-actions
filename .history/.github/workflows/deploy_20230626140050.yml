@@ -53,3 +53,6 @@ jobs:
         run: |
         sudo -E sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i /home/tunnel/.ssh/oci_propzen_live.key ubuntu@10.20.1.89 'cd /var/www/main_front && echo "Changed directory to /var/www/main_front"'
 
+      - name: Change Directory to main_front
+        run: |
+        sudo -E sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -i /home/tunnel/.ssh/oci_propzen_live.key ubuntu@10.20.1.89 'cd /var/www/main_front && echo "Changed directory to /var/www/main_front"'
