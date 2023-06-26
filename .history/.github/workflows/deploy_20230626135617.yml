@@ -47,7 +47,6 @@ jobs:
         run: |
           echo "Current user: $(id -u -n)"
           echo "Current user's group: $(id -g -n)"
-          echo "Current user's id: $(id)"
 
       - name: Connect to Oracle Cloud Subnet
         run: |
