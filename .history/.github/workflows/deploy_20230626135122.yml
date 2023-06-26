@@ -46,7 +46,6 @@ jobs:
       - name: Check User Permissions
         run: |
           whoami
-          tunnel@${{ secrets.ORACLE_CLOUD_IP_ADDRESS }}
 
       - name: Connect to Oracle Cloud Subnet
         run: |
